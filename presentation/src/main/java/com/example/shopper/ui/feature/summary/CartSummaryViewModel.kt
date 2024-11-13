@@ -15,7 +15,6 @@ class CartSummaryViewModel(private val getCartSummaryUseCase: CartSummaryUseCase
     val uiState = _uiState.asStateFlow()
 
     init {
-
     }
 
     fun getCartSummary(userId: Int) {
