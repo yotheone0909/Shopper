@@ -8,7 +8,7 @@ data class CartItem(
     val id: Int,
     val productId: Int,
     val price: Double,
-    val imageUrl: String?,
+    val imageUrl: String? = null,
     val quantity: Int,
     val productName: String
 ) {

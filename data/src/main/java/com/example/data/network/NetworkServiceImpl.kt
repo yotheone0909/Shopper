@@ -98,7 +98,7 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
     }
 
     override suspend fun getCartSummary(userId: Int): ResultWrapper<CartSummary> {
-        val url = "$baseUrl/cart/$userId/summary"
+        val url = "$baseUrl/checkout/$userId/summary"
         return makeRequest(url = url,
             method = HttpMethod.Get,
             mapper = { cartItem: CartSummaryResponse ->

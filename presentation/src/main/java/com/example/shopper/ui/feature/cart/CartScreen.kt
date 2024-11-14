@@ -43,6 +43,7 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.domain.model.CartItemModel
 import com.example.shopper.R
+import com.example.shopper.navigation.CartSummaryScreen
 import com.example.shopper.ui.feature.home.ProfileHeader
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
@@ -131,7 +132,7 @@ fun CartScreen(navController: NavController, viewModel: CartViewModel = koinView
                 }
                 if (shouldShowList) {
                     Button(onClick = {
-
+                        navController.navigate(CartSummaryScreen)
                     }, modifier = Modifier.fillMaxWidth()) {
                         Text(text = "Checkout")
                     }

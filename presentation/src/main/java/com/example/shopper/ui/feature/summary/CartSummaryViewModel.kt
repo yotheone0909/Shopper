@@ -15,9 +15,10 @@ class CartSummaryViewModel(private val getCartSummaryUseCase: CartSummaryUseCase
     val uiState = _uiState.asStateFlow()
 
     init {
+        getCartSummary(1)
     }
 
-    fun getCartSummary(userId: Int) {
+    private fun getCartSummary(userId: Int) {
         viewModelScope.launch {
             _uiState.value = CartSummaryEvent.Loading
             when(val summary = getCartSummaryUseCase.execute(userId)) {
