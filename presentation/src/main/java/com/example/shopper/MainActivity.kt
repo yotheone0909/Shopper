@@ -38,11 +38,15 @@ import com.example.shopper.navigation.CartSummaryScreen
 import com.example.shopper.navigation.HomeScreen
 import com.example.shopper.navigation.ProductDetails
 import com.example.shopper.navigation.ProfileScreen
+import com.example.shopper.navigation.UserAddressRoute
+import com.example.shopper.navigation.UserAddressRouteWrapper
 import com.example.shopper.navigation.productNavType
+import com.example.shopper.navigation.userAddressNavType
 import com.example.shopper.ui.feature.cart.CartScreen
 import com.example.shopper.ui.feature.home.HomeScreen
 import com.example.shopper.ui.feature.product.details.ProductDetailsScreen
 import com.example.shopper.ui.feature.summary.CartSummaryScreen
+import com.example.shopper.ui.feature.user_address.UserAddressScreen
 import com.example.shopper.ui.theme.ShopperTheme
 import kotlin.reflect.typeOf
 
@@ -95,6 +99,14 @@ class MainActivity : ComponentActivity() {
                                 val productRoute = it.toRoute<ProductDetails>()
                                 ProductDetailsScreen(navController, productRoute.product)
                                 shouldShowBottomNav.value = false
+                            }
+                            composable<UserAddressRoute>(
+                                typeMap = mapOf(typeOf<UserAddressRouteWrapper>() to userAddressNavType)
+                            ) {
+                                shouldShowBottomNav.value = false
+                                val userAddressRoute = it.toRoute<UserAddressRoute>()
+                                UserAddressScreen(navController,
+                                    userAddressRoute.userAddressRouteWrapper?.userAddress)
                             }
                         }
                     }

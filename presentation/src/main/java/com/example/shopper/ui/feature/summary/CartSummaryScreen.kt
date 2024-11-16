@@ -22,7 +22,10 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -35,6 +38,10 @@ import androidx.navigation.NavController
 import com.example.domain.model.CartItemModel
 import com.example.domain.model.CartSummary
 import com.example.shopper.R
+import com.example.shopper.model.UserAddress
+import com.example.shopper.navigation.UserAddressRoute
+import com.example.shopper.navigation.UserAddressRouteWrapper
+import com.example.shopper.ui.feature.user_address.USER_ADDRESS_SCREEN
 import com.example.shopper.utils.CurrencyUtils
 import org.koin.androidx.compose.koinViewModel
 
@@ -43,6 +50,10 @@ fun CartSummaryScreen(
     navController: NavController,
     viewModel: CartSummaryViewModel = koinViewModel()
 ) {
+
+    val address = remember {
+        mutableStateOf<UserAddress?>(null)
+    }
 
     Column(
         modifier = Modifier
@@ -61,6 +72,13 @@ fun CartSummaryScreen(
             )
         }
         val uiState = viewModel.uiState.collectAsState()
+
+        LaunchedEffect(navController) {
+            val savedState = navController.currentBackStackEntry?.savedStateHandle
+            savedState?.getStateFlow(USER_ADDRESS_SCREEN, address.value)?.collect { userAddress ->
+                address.value = userAddress
+            }
+        }
         Box(
             modifier = Modifier
                 .weight(1f)
@@ -87,7 +105,9 @@ fun CartSummaryScreen(
 
                 is CartSummaryEvent.Success -> {
                     Column {
-                        AddressBar("1234, Main Street, New York, USA", onClick = {})
+                        AddressBar(address.value.toString(), onClick = {
+                            navController.navigate(UserAddressRoute(UserAddressRouteWrapper(address.value)))
+                        })
                         Spacer(modifier = Modifier.size(8.dp))
                         CartSummaryScreenContent(event.summary)
                     }
