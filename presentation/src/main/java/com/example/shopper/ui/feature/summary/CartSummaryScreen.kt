@@ -37,8 +37,10 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.domain.model.CartItemModel
 import com.example.domain.model.CartSummary
+import com.example.shopper.BottomNavItems
 import com.example.shopper.R
 import com.example.shopper.model.UserAddress
+import com.example.shopper.navigation.HomeScreen
 import com.example.shopper.navigation.UserAddressRoute
 import com.example.shopper.navigation.UserAddressRouteWrapper
 import com.example.shopper.ui.feature.user_address.USER_ADDRESS_SCREEN
@@ -105,16 +107,53 @@ fun CartSummaryScreen(
 
                 is CartSummaryEvent.Success -> {
                     Column {
-                        AddressBar(address.value.toString(), onClick = {
-                            navController.navigate(UserAddressRoute(UserAddressRouteWrapper(address.value)))
-                        })
+                        AddressBar(
+                            if (address.value != null) address.value.toString() else "",
+                            onClick = {
+                                navController.navigate(
+                                    UserAddressRoute(
+                                        UserAddressRouteWrapper(
+                                            address.value
+                                        )
+                                    )
+                                )
+                            })
                         Spacer(modifier = Modifier.size(8.dp))
                         CartSummaryScreenContent(event.summary)
                     }
                 }
+
+                is CartSummaryEvent.PlaceOrder -> {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Image(
+                            painter = painterResource(R.drawable.ic_order_success),
+                            contentDescription = null
+                        )
+                        Text(
+                            text = "Order Placed: ${event.orderId}",
+                            style = MaterialTheme.typography.titleMedium
+                        )
+
+                        Button(onClick = {
+                            navController.popBackStack(HomeScreen, inclusive = true)
+                        }) {
+                            Text(
+                                text = "Continue Shopping",
+                                style = MaterialTheme.typography.titleSmall
+                            )
+                        }
+                    }
+                }
             }
         }
-        Button(onClick = {}, modifier = Modifier.fillMaxWidth()) {
+        Button(
+            onClick = { viewModel.placeOrder(address.value!!) }, modifier = Modifier.fillMaxWidth(),
+            enabled = address.value != null
+        ) {
             Text(text = "Checkout", style = MaterialTheme.typography.titleMedium)
         }
     }
@@ -195,7 +234,7 @@ fun AmountRow(title: String, amount: Double) {
 }
 
 @Composable
-fun AddressBar(address: String, onClick: (() -> Unit)) {
+fun AddressBar(address: String?, onClick: (() -> Unit)) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -223,7 +262,7 @@ fun AddressBar(address: String, onClick: (() -> Unit)) {
                 fontSize = 16.sp
             )
             Text(
-                text = address,
+                text = address.orEmpty(),
                 style = MaterialTheme.typography.bodySmall,
                 fontSize = 14.sp,
                 color = Color.Gray

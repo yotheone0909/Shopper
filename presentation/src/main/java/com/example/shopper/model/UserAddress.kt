@@ -1,6 +1,8 @@
 package com.example.shopper.model
 
 import android.os.Parcelable
+import com.example.data.model.request.AddressDataModel
+import com.example.domain.model.AddressDomainModel
 import kotlinx.parcelize.Parcelize
 import kotlinx.serialization.Serializable
 
@@ -12,4 +14,12 @@ data class UserAddress(
     val state: String,
     val postalCode: String,
     val country: String
-) : Parcelable
+) : Parcelable {
+    override fun toString(): String {
+        return "$addressLine, $city, $state, $postalCode, $country"
+    }
+
+    fun toAddressDomainModel() = AddressDomainModel(
+        addressLine, city, state, postalCode, country
+    )
+}
