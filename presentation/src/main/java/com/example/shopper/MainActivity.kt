@@ -31,11 +31,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.example.domain.model.Product
 import com.example.shopper.model.UiProductModel
 import com.example.shopper.navigation.CartScreen
 import com.example.shopper.navigation.CartSummaryScreen
 import com.example.shopper.navigation.HomeScreen
+import com.example.shopper.navigation.OrdersScreen
 import com.example.shopper.navigation.ProductDetails
 import com.example.shopper.navigation.ProfileScreen
 import com.example.shopper.navigation.UserAddressRoute
@@ -83,6 +83,10 @@ class MainActivity : ComponentActivity() {
                                 shouldShowBottomNav.value = true
                                 CartScreen(navController)
                             }
+                            composable<OrdersScreen> {
+                                shouldShowBottomNav.value = true
+
+                            }
                             composable<ProfileScreen> {
                                 Box(modifier = Modifier.fillMaxWidth()) {
                                     Text("Profile")
@@ -123,7 +127,7 @@ fun BottomNavigationBar(navController: NavController) {
         val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
         val items = listOf(
             BottomNavItems.Home,
-            BottomNavItems.Cart,
+            BottomNavItems.Orders,
             BottomNavItems.Profile
         )
 
@@ -164,8 +168,7 @@ fun BottomNavigationBar(navController: NavController) {
 
 sealed class BottomNavItems(val route: Any, val title: String, val icon: Int) {
     data object Home :
-        BottomNavItems(com.example.shopper.navigation.HomeScreen, "Home", R.drawable.ic_home)
-
-    data object Cart : BottomNavItems(CartScreen, "Cart", R.drawable.ic_cart)
+        BottomNavItems(HomeScreen, "Home", R.drawable.ic_home)
+    data object Orders : BottomNavItems(OrdersScreen, "Cart", R.drawable.ic_orders)
     data object Profile : BottomNavItems(ProfileScreen, "Profile", R.drawable.ic_profile_bn)
 }

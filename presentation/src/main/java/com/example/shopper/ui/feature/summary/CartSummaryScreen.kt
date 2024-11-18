@@ -139,7 +139,7 @@ fun CartSummaryScreen(
                         )
 
                         Button(onClick = {
-                            navController.popBackStack(HomeScreen, inclusive = true)
+                            navController.popBackStack(HomeScreen, inclusive = false)
                         }) {
                             Text(
                                 text = "Continue Shopping",

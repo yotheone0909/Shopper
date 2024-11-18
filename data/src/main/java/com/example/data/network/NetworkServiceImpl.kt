@@ -14,6 +14,7 @@ import com.example.domain.model.CartItemModel
 import com.example.domain.model.CartModel
 import com.example.domain.model.CartSummary
 import com.example.domain.model.CategoriesListModel
+import com.example.domain.model.OrdersListModel
 import com.example.domain.model.Product
 import com.example.domain.model.ProductListModel
 import com.example.domain.model.request.AddedCartRequestModel
@@ -117,6 +118,15 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
             body = dataModel,
             mapper = { orderRes: PlaceOrderResponse ->
                 orderRes.data.id
+            })
+    }
+
+    override suspend fun getOrderList(): ResultWrapper<OrdersListModel> {
+        val url = "$baseUrl/orders"
+        return makeRequest(url,
+            method = HttpMethod.Get,
+            mapper = { orders: OrdersListModel ->
+                orders
             })
     }
 
