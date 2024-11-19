@@ -2,6 +2,7 @@ package com.example.shopper.di
 
 import com.example.shopper.ui.feature.cart.CartViewModel
 import com.example.shopper.ui.feature.home.HomeViewModel
+import com.example.shopper.ui.feature.orders.OrdersViewModel
 import com.example.shopper.ui.feature.product.details.ProductDetailViewModel
 import com.example.shopper.ui.feature.summary.CartSummaryViewModel
 import org.koin.core.module.dsl.viewModel
@@ -22,5 +23,9 @@ val viewModelModule = module {
 
     viewModel {
         CartSummaryViewModel(get(), get())
+    }
+
+    viewModel {
+        OrdersViewModel(get())
     }
 }

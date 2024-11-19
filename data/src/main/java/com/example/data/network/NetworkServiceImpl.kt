@@ -7,6 +7,7 @@ import com.example.data.model.request.AddressDataModel
 import com.example.data.model.response.CartResponse
 import com.example.data.model.response.CartSummaryResponse
 import com.example.data.model.response.CategoriesListResponse
+import com.example.data.model.response.OrdersListResponse
 import com.example.data.model.response.PlaceOrderResponse
 import com.example.data.model.response.ProductListResponse
 import com.example.domain.model.AddressDomainModel
@@ -122,11 +123,11 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
     }
 
     override suspend fun getOrderList(): ResultWrapper<OrdersListModel> {
-        val url = "$baseUrl/orders"
+        val url = "$baseUrl/orders/1"
         return makeRequest(url,
             method = HttpMethod.Get,
-            mapper = { orders: OrdersListModel ->
-                orders
+            mapper = { ordersResponse: OrdersListResponse ->
+                ordersResponse.toDomainResponse()
             })
     }
 

@@ -2,7 +2,7 @@ package com.example.domain.model
 
 data class OrderProductItem(
     val id: Int,
-    val order: Int,
+    val orderId: Int,
     val price: Double,
     val productId: Int,
     val productName: String,

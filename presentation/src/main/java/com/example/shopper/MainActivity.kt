@@ -44,6 +44,7 @@ import com.example.shopper.navigation.productNavType
 import com.example.shopper.navigation.userAddressNavType
 import com.example.shopper.ui.feature.cart.CartScreen
 import com.example.shopper.ui.feature.home.HomeScreen
+import com.example.shopper.ui.feature.orders.OrdersScreen
 import com.example.shopper.ui.feature.product.details.ProductDetailsScreen
 import com.example.shopper.ui.feature.summary.CartSummaryScreen
 import com.example.shopper.ui.feature.user_address.UserAddressScreen
@@ -85,7 +86,7 @@ class MainActivity : ComponentActivity() {
                             }
                             composable<OrdersScreen> {
                                 shouldShowBottomNav.value = true
-
+                                OrdersScreen()
                             }
                             composable<ProfileScreen> {
                                 Box(modifier = Modifier.fillMaxWidth()) {
