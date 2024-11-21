@@ -7,6 +7,7 @@ import com.example.domain.model.CartSummary
 import com.example.domain.model.CategoriesListModel
 import com.example.domain.model.OrdersListModel
 import com.example.domain.model.ProductListModel
+import com.example.domain.model.UserDomainModel
 import com.example.domain.model.request.AddedCartRequestModel
 
 interface NetworkService {
@@ -17,12 +18,18 @@ interface NetworkService {
         request: AddedCartRequestModel
     ): ResultWrapper<CartModel>
 
-    suspend fun getCart() : ResultWrapper<CartModel>
-    suspend fun updateQuantity(cartItemModel: CartItemModel) : ResultWrapper<CartModel>
+    suspend fun getCart(): ResultWrapper<CartModel>
+    suspend fun updateQuantity(cartItemModel: CartItemModel): ResultWrapper<CartModel>
     suspend fun deleteItem(cartItemId: Int, userId: Int): ResultWrapper<CartModel>
     suspend fun getCartSummary(userId: Int): ResultWrapper<CartSummary>
     suspend fun placeOrder(address: AddressDomainModel, userId: Int): ResultWrapper<Long>
     suspend fun getOrderList(): ResultWrapper<OrdersListModel>
+    suspend fun login(email: String, password: String): ResultWrapper<UserDomainModel>
+    suspend fun register(
+        email: String,
+        password: String,
+        name: String
+    ): ResultWrapper<UserDomainModel>
 }
 
 sealed class ResultWrapper<out T> {
