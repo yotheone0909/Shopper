@@ -12,6 +12,7 @@ import com.example.data.model.response.CategoriesListResponse
 import com.example.data.model.response.OrdersListResponse
 import com.example.data.model.response.PlaceOrderResponse
 import com.example.data.model.response.ProductListResponse
+import com.example.data.model.response.UserAuthResponse
 import com.example.data.model.response.UserResponse
 import com.example.domain.model.AddressDomainModel
 import com.example.domain.model.CartItemModel
@@ -140,8 +141,8 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
         return makeRequest(url,
             method = HttpMethod.Post,
             body = LoginRequest(email, password),
-            mapper = { user: UserResponse ->
-                user.toDomainModel()
+            mapper = { user: UserAuthResponse ->
+                user.data.toDomainModel()
             })
     }
 
@@ -154,8 +155,8 @@ class NetworkServiceImpl(val client: HttpClient) : NetworkService {
         return makeRequest(url,
             method = HttpMethod.Post,
             body = RegisterRequest(email, password, name),
-            mapper = { user: UserResponse ->
-                user.toDomainModel()
+            mapper = { user: UserAuthResponse ->
+                user.data.toDomainModel()
             })
     }
 

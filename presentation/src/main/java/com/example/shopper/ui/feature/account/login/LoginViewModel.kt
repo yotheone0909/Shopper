@@ -13,7 +13,7 @@ class LoginViewModel(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<LoginState>(LoginState.Idle)
-    private val state = _state.asStateFlow()
+    val state = _state.asStateFlow()
 
     fun login(email: String, password: String) {
         _state.value = LoginState.Loading

@@ -35,6 +35,7 @@ import com.example.shopper.model.UiProductModel
 import com.example.shopper.navigation.CartScreen
 import com.example.shopper.navigation.CartSummaryScreen
 import com.example.shopper.navigation.HomeScreen
+import com.example.shopper.navigation.LoginScreen
 import com.example.shopper.navigation.OrdersScreen
 import com.example.shopper.navigation.ProductDetails
 import com.example.shopper.navigation.ProfileScreen
@@ -42,6 +43,7 @@ import com.example.shopper.navigation.UserAddressRoute
 import com.example.shopper.navigation.UserAddressRouteWrapper
 import com.example.shopper.navigation.productNavType
 import com.example.shopper.navigation.userAddressNavType
+import com.example.shopper.ui.feature.account.login.LoginScreen
 import com.example.shopper.ui.feature.cart.CartScreen
 import com.example.shopper.ui.feature.home.HomeScreen
 import com.example.shopper.ui.feature.orders.OrdersScreen
@@ -75,7 +77,11 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(it)
                     ) {
-                        NavHost(navController = navController, startDestination = HomeScreen) {
+                        NavHost(navController = navController, startDestination = LoginScreen) {
+                            composable<LoginScreen> {
+                                shouldShowBottomNav.value = false
+                                LoginScreen(navController)
+                            }
                             composable<HomeScreen> {
                                 HomeScreen(navController)
                                 shouldShowBottomNav.value = true
