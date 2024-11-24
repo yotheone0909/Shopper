@@ -6,5 +6,5 @@ import com.example.domain.network.ResultWrapper
 import com.example.domain.repository.CartRepository
 
 class DeleteProductUseCase(private val cartRepository: CartRepository) {
-   suspend fun execute(cartItemId: Int, userId: Int) : ResultWrapper<CartModel> = cartRepository.deleteItem(cartItemId, userId)
+   suspend fun execute(cartItemId: Int, userId: Long) : ResultWrapper<CartModel> = cartRepository.deleteItem(cartItemId, userId)
 }

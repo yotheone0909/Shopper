@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.network.ResultWrapper
 import com.example.domain.usecase.LoginUseCase
 import com.example.domain.usecase.RegisterUseCase
+import com.example.shopper.ShopperSession
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -14,7 +15,7 @@ class RegisterViewModel(
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<RegisterState>(RegisterState.Idle)
-    private val state = _state.asStateFlow()
+    val state = _state.asStateFlow()
 
     fun register(email: String, password: String, name: String) {
         _state.value = RegisterState.Loading
@@ -24,6 +25,7 @@ class RegisterViewModel(
                     _state.value = RegisterState.Error(result.exception.message ?: "Something went wrong!")
                 }
                 is ResultWrapper.Success -> {
+                    ShopperSession.storeUser(result.value)
                     _state.value = RegisterState.Success
                 }
             }

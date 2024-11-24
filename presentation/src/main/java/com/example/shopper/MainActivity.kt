@@ -39,11 +39,13 @@ import com.example.shopper.navigation.LoginScreen
 import com.example.shopper.navigation.OrdersScreen
 import com.example.shopper.navigation.ProductDetails
 import com.example.shopper.navigation.ProfileScreen
+import com.example.shopper.navigation.RegisterScreen
 import com.example.shopper.navigation.UserAddressRoute
 import com.example.shopper.navigation.UserAddressRouteWrapper
 import com.example.shopper.navigation.productNavType
 import com.example.shopper.navigation.userAddressNavType
 import com.example.shopper.ui.feature.account.login.LoginScreen
+import com.example.shopper.ui.feature.account.register.RegisterScreen
 import com.example.shopper.ui.feature.cart.CartScreen
 import com.example.shopper.ui.feature.home.HomeScreen
 import com.example.shopper.ui.feature.orders.OrdersScreen
@@ -77,10 +79,21 @@ class MainActivity : ComponentActivity() {
                             .fillMaxSize()
                             .padding(it)
                     ) {
-                        NavHost(navController = navController, startDestination = LoginScreen) {
+                        NavHost(
+                            navController = navController,
+                            startDestination = if (ShopperSession.getUser() != null) {
+                                HomeScreen
+                            } else {
+                                LoginScreen
+                            }
+                        ) {
                             composable<LoginScreen> {
                                 shouldShowBottomNav.value = false
                                 LoginScreen(navController)
+                            }
+                            composable<RegisterScreen> {
+                                shouldShowBottomNav.value = false
+                                RegisterScreen(navController)
                             }
                             composable<HomeScreen> {
                                 HomeScreen(navController)
@@ -116,8 +129,10 @@ class MainActivity : ComponentActivity() {
                             ) {
                                 shouldShowBottomNav.value = false
                                 val userAddressRoute = it.toRoute<UserAddressRoute>()
-                                UserAddressScreen(navController,
-                                    userAddressRoute.userAddressRouteWrapper?.userAddress)
+                                UserAddressScreen(
+                                    navController,
+                                    userAddressRoute.userAddressRouteWrapper?.userAddress
+                                )
                             }
                         }
                     }
@@ -176,6 +191,7 @@ fun BottomNavigationBar(navController: NavController) {
 sealed class BottomNavItems(val route: Any, val title: String, val icon: Int) {
     data object Home :
         BottomNavItems(HomeScreen, "Home", R.drawable.ic_home)
+
     data object Orders : BottomNavItems(OrdersScreen, "Cart", R.drawable.ic_orders)
     data object Profile : BottomNavItems(ProfileScreen, "Profile", R.drawable.ic_profile_bn)
 }

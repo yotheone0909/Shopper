@@ -50,6 +50,7 @@ import coil.compose.AsyncImage
 import com.example.domain.model.Product
 import com.example.shopper.R
 import com.example.shopper.model.UiProductModel
+import com.example.shopper.navigation.CartScreen
 import com.example.shopper.navigation.ProductDetails
 import org.koin.androidx.compose.koinViewModel
 
@@ -104,13 +105,15 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel = koinView
             }
             HomeContent(feature.value, popular.value, categories.value, loading.value, error.value, onClick = {
                 navController.navigate(ProductDetails(UiProductModel.fromProduct(it)))
+            }, onCartClicked = {
+                navController.navigate(CartScreen)
             })
         }
     }
 }
 
 @Composable
-fun ProfileHeader(modifier: Modifier = Modifier) {
+fun ProfileHeader(modifier: Modifier = Modifier, onCartClicked: () -> Unit) {
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -137,16 +140,32 @@ fun ProfileHeader(modifier: Modifier = Modifier) {
                 )
             }
         }
-        Image(
-            painter = painterResource(id = R.drawable.ic_notification),
-            contentDescription = null,
-            modifier = Modifier
-                .size(48.dp)
-                .align(Alignment.CenterEnd)
-                .clip(CircleShape)
-                .background(Color.LightGray.copy(alpha = 0.3f)),
-            contentScale = ContentScale.Inside
-        )
+
+        Row(modifier = Modifier
+            .align(Alignment.CenterEnd)) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_notification),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(Color.LightGray.copy(alpha = 0.3f)),
+                contentScale = ContentScale.Inside
+            )
+            Image(
+                painter = painterResource(id = R.drawable.ic_notification),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(CircleShape)
+                    .background(Color.LightGray.copy(alpha = 0.3f))
+                    .clickable {
+                        onCartClicked()
+                    },
+                contentScale = ContentScale.Inside
+            )
+        }
+
     }
 }
 
@@ -157,11 +176,12 @@ fun HomeContent(
     categories: List<String>,
     isLoading: Boolean = false,
     errorMessage: String? = null,
-    onClick: (Product) -> Unit
+    onClick: (Product) -> Unit,
+    onCartClicked: () -> Unit
 ) {
     LazyColumn {
         item {
-            ProfileHeader()
+            ProfileHeader(onCartClicked = onCartClicked)
             Spacer(modifier = Modifier.size(16.dp))
             SearchBar(value = "", {})
         }

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.domain.network.ResultWrapper
 import com.example.domain.usecase.LoginUseCase
+import com.example.shopper.ShopperSession
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -23,6 +24,7 @@ class LoginViewModel(
                     _state.value = LoginState.Error(result.exception.message ?: "Something went wrong!")
                 }
                 is ResultWrapper.Success -> {
+                    ShopperSession.storeUser(result.value)
                     _state.value = LoginState.Success
                 }
             }

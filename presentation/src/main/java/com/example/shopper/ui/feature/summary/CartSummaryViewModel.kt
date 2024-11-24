@@ -6,6 +6,7 @@ import com.example.domain.model.CartSummary
 import com.example.domain.network.ResultWrapper
 import com.example.domain.usecase.CartSummaryUseCase
 import com.example.domain.usecase.PlaceOrderUseCase
+import com.example.shopper.ShopperSession
 import com.example.shopper.model.UserAddress
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -18,6 +19,7 @@ class CartSummaryViewModel(
 
     private val _uiState = MutableStateFlow<CartSummaryEvent>(CartSummaryEvent.Loading)
     val uiState = _uiState.asStateFlow()
+    private val userDomainModel = ShopperSession.getUser()
 
     init {
         getCartSummary(1)
@@ -26,7 +28,7 @@ class CartSummaryViewModel(
     private fun getCartSummary(userId: Int) {
         viewModelScope.launch {
             _uiState.value = CartSummaryEvent.Loading
-            when (val summary = getCartSummaryUseCase.execute(userId)) {
+            when (val summary = getCartSummaryUseCase.execute(userDomainModel!!.id!!.toLong())) {
                 is ResultWrapper.Failure -> {
                     _uiState.value = CartSummaryEvent.Error("Something went wrong!")
                 }
@@ -41,7 +43,7 @@ class CartSummaryViewModel(
     fun placeOrder(userAddress: UserAddress) {
         viewModelScope.launch {
             _uiState.value = CartSummaryEvent.Loading
-            when (val orderId = placeOrderUseCase.execute(userAddress.toAddressDomainModel())) {
+            when (val orderId = placeOrderUseCase.execute(userAddress.toAddressDomainModel(), userDomainModel!!.id!!.toLong())) {
                 is ResultWrapper.Failure -> {
                     _uiState.value = CartSummaryEvent.Error("Something went wrong!")
                 }

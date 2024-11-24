@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.domain.model.OrdersData
 import com.example.domain.network.ResultWrapper
 import com.example.domain.usecase.OrderListUseCase
+import com.example.shopper.ShopperSession
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -15,6 +16,7 @@ class OrdersViewModel(
 
     private val _ordersEvent = MutableStateFlow<OrdersEvent>(OrdersEvent.Loading)
     val ordersEvent = _ordersEvent.asStateFlow()
+    private val userDomainModel = ShopperSession.getUser()
 
     init {
         getOrderList()
@@ -27,7 +29,7 @@ class OrdersViewModel(
 
     private fun getOrderList() {
         viewModelScope.launch {
-            when(val result = orderListUseCase.execute()) {
+            when(val result = orderListUseCase.execute(userDomainModel!!.id!!.toLong())) {
                 is ResultWrapper.Failure -> {
                     _ordersEvent.value = OrdersEvent.Error("Something went wrong!")
                 }

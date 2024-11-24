@@ -1,4 +1,4 @@
-package com.example.shopper.ui.feature.account.login
+package com.example.shopper.ui.feature.account.register
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -26,10 +26,12 @@ import androidx.navigation.NavController
 import com.example.shopper.R
 import com.example.shopper.navigation.HomeScreen
 import com.example.shopper.navigation.RegisterScreen
+import com.example.shopper.ui.feature.account.login.LoginState
+import com.example.shopper.ui.feature.account.login.LoginViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun LoginScreen(navController: NavController, viewModel: LoginViewModel = koinViewModel()) {
+fun RegisterScreen(navController: NavController, viewModel: RegisterViewModel = koinViewModel()) {
     val loginState = viewModel.state.collectAsState()
     Column(
         modifier = Modifier
@@ -39,24 +41,24 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = koinVi
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         when (val state = loginState.value) {
-            is LoginState.Error -> {
+            is RegisterState.Error -> {
                 Text(text = state.message)
             }
 
-            LoginState.Idle -> {
-                LoginContent(onSingInClicked = { email, password ->
-                    viewModel.login(email, password)
-                }, onRegisterClick = {
-                    navController.navigate(RegisterScreen)
+            RegisterState.Idle -> {
+                RegisterContent(onSingInClicked = { email, password, name ->
+                    viewModel.register(email = email, password = password, name = name)
+                }, onSignInClick = {
+                    navController.popBackStack()
                 })
             }
 
-            LoginState.Loading -> {
+            RegisterState.Loading -> {
                 CircularProgressIndicator()
                 Text(text = stringResource(R.string.loading))
             }
 
-            LoginState.Success -> {
+            RegisterState.Success -> {
                 LaunchedEffect(loginState.value) {
                     navController.navigate(HomeScreen) {
                         popUpTo(HomeScreen) {
@@ -72,11 +74,17 @@ fun LoginScreen(navController: NavController, viewModel: LoginViewModel = koinVi
 }
 
 @Composable
-fun LoginContent(onSingInClicked: (String, String) -> Unit, onRegisterClick: () -> Unit) {
+fun RegisterContent(
+    onSingInClicked: (String, String, String) -> Unit,
+    onSignInClick: () -> Unit
+) {
     val email = remember {
         mutableStateOf("")
     }
     val password = remember {
+        mutableStateOf("")
+    }
+    val name = remember {
         mutableStateOf("")
     }
     Column(
@@ -86,7 +94,19 @@ fun LoginContent(onSingInClicked: (String, String) -> Unit, onRegisterClick: () 
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Login", style = MaterialTheme.typography.titleMedium)
+        Text(text = stringResource(R.string.register), style = MaterialTheme.typography.titleMedium)
+        OutlinedTextField(
+            value = name.value,
+            onValueChange = {
+                name.value = it
+            },
+            modifier = Modifier
+                .padding(vertical = 4.dp)
+                .fillMaxWidth(),
+            label = {
+                Text(text = "Name")
+            }
+        )
         OutlinedTextField(
             value = email.value,
             onValueChange = {
@@ -114,7 +134,7 @@ fun LoginContent(onSingInClicked: (String, String) -> Unit, onRegisterClick: () 
         )
         Button(
             onClick = {
-                onSingInClicked(email.value, password.value)
+                onSingInClicked(email.value, password.value, name.value)
             }, modifier = Modifier.fillMaxWidth(),
             enabled = email.value.isNotEmpty() && password.value.isNotEmpty()
         ) {
@@ -123,13 +143,13 @@ fun LoginContent(onSingInClicked: (String, String) -> Unit, onRegisterClick: () 
         Text(text = "Don't have an account? Register", modifier = Modifier
             .padding(8.dp)
             .clickable {
-                onRegisterClick()
+                onSignInClick()
             })
     }
 }
 
 @Composable
 @Preview(showBackground = true)
-fun PrivateLoginScreen(modifier: Modifier = Modifier) {
-    LoginContent(onSingInClicked = { email, password -> }, onRegisterClick = {})
+fun PrivateRegisterScreen(modifier: Modifier = Modifier) {
+    RegisterContent(onSingInClicked = { email, password, name -> }, onSignInClick = {})
 }

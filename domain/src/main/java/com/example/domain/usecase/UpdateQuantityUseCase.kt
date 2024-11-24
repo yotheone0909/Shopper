@@ -6,5 +6,5 @@ import com.example.domain.network.ResultWrapper
 import com.example.domain.repository.CartRepository
 
 class UpdateQuantityUseCase(private val cartRepository: CartRepository) {
-   suspend fun execute(cartItemModel: CartItemModel) : ResultWrapper<CartModel> = cartRepository.updateQuantity(cartItemModel)
+   suspend fun execute(cartItemModel: CartItemModel, userId: Long) : ResultWrapper<CartModel> = cartRepository.updateQuantity(cartItemModel, userId)
 }
