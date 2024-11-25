@@ -96,7 +96,7 @@ fun LoginContent(onSingInClicked: (String, String) -> Unit, onRegisterClick: () 
                 .padding(vertical = 4.dp)
                 .fillMaxWidth(),
             label = {
-                Text(text = "Email")
+                Text(text = stringResource(R.string.email))
             }
         )
         OutlinedTextField(
@@ -108,7 +108,7 @@ fun LoginContent(onSingInClicked: (String, String) -> Unit, onRegisterClick: () 
                 .padding(vertical = 8.dp)
                 .fillMaxWidth(),
             label = {
-                Text(text = "Password")
+                Text(text = stringResource(R.string.email))
             },
             visualTransformation = PasswordVisualTransformation()
         )
@@ -118,9 +118,9 @@ fun LoginContent(onSingInClicked: (String, String) -> Unit, onRegisterClick: () 
             }, modifier = Modifier.fillMaxWidth(),
             enabled = email.value.isNotEmpty() && password.value.isNotEmpty()
         ) {
-            Text(text = "Login")
+            Text(text = stringResource(R.string.login))
         }
-        Text(text = "Don't have an account? Register", modifier = Modifier
+        Text(text = stringResource(R.string.already_have_an_account), modifier = Modifier
             .padding(8.dp)
             .clickable {
                 onRegisterClick()

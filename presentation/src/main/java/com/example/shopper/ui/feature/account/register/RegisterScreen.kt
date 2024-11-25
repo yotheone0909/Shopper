@@ -25,9 +25,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.shopper.R
 import com.example.shopper.navigation.HomeScreen
-import com.example.shopper.navigation.RegisterScreen
-import com.example.shopper.ui.feature.account.login.LoginState
-import com.example.shopper.ui.feature.account.login.LoginViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -104,7 +101,7 @@ fun RegisterContent(
                 .padding(vertical = 4.dp)
                 .fillMaxWidth(),
             label = {
-                Text(text = "Name")
+                Text(text = stringResource(R.string.name))
             }
         )
         OutlinedTextField(
@@ -116,7 +113,7 @@ fun RegisterContent(
                 .padding(vertical = 4.dp)
                 .fillMaxWidth(),
             label = {
-                Text(text = "Email")
+                Text(text = stringResource(R.string.email))
             }
         )
         OutlinedTextField(
@@ -128,7 +125,7 @@ fun RegisterContent(
                 .padding(vertical = 8.dp)
                 .fillMaxWidth(),
             label = {
-                Text(text = "Password")
+                Text(text = stringResource(R.string.password))
             },
             visualTransformation = PasswordVisualTransformation()
         )
@@ -138,9 +135,9 @@ fun RegisterContent(
             }, modifier = Modifier.fillMaxWidth(),
             enabled = email.value.isNotEmpty() && password.value.isNotEmpty()
         ) {
-            Text(text = "Login")
+            Text(text = stringResource(R.string.register))
         }
-        Text(text = "Don't have an account? Register", modifier = Modifier
+        Text(text = stringResource(R.string.already_have_an_account), modifier = Modifier
             .padding(8.dp)
             .clickable {
                 onSignInClick()

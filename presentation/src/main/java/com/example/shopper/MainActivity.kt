@@ -53,6 +53,7 @@ import com.example.shopper.ui.feature.product.details.ProductDetailsScreen
 import com.example.shopper.ui.feature.summary.CartSummaryScreen
 import com.example.shopper.ui.feature.user_address.UserAddressScreen
 import com.example.shopper.ui.theme.ShopperTheme
+import org.koin.android.ext.android.inject
 import kotlin.reflect.typeOf
 
 class MainActivity : ComponentActivity() {
@@ -60,6 +61,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val shopperSession: ShopperSession by inject()
             ShopperTheme {
                 val shouldShowBottomNav = remember {
                     mutableStateOf(true)
@@ -81,7 +83,7 @@ class MainActivity : ComponentActivity() {
                     ) {
                         NavHost(
                             navController = navController,
-                            startDestination = if (ShopperSession.getUser() != null) {
+                            startDestination = if (shopperSession.getUser() != null) {
                                 HomeScreen
                             } else {
                                 LoginScreen

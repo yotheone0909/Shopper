@@ -10,7 +10,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class LoginViewModel(
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val shopperSession: ShopperSession
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<LoginState>(LoginState.Idle)
@@ -24,7 +25,7 @@ class LoginViewModel(
                     _state.value = LoginState.Error(result.exception.message ?: "Something went wrong!")
                 }
                 is ResultWrapper.Success -> {
-                    ShopperSession.storeUser(result.value)
+                    shopperSession.storeUser(result.value)
                     _state.value = LoginState.Success
                 }
             }
